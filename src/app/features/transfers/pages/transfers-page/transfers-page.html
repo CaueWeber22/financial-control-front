@@ -1,0 +1,54 @@
+<article class="panel split-panel">
+  <div>
+    <div class="section-heading">
+      <p class="eyebrow">Transferências</p>
+      <h2>Mover entre contas</h2>
+    </div>
+
+    <form [formGroup]="transferForm" (ngSubmit)="createTransfer()" class="form-grid">
+      <label>
+        Origem
+        <select formControlName="sourceAccountId">
+          <option value="">Selecione</option>
+          @for (account of store.accounts(); track account.id) {
+            <option [value]="account.id">{{ account.name }}</option>
+          }
+        </select>
+      </label>
+      <label>
+        Destino
+        <select formControlName="destinationAccountId">
+          <option value="">Selecione</option>
+          @for (account of store.accounts(); track account.id) {
+            <option [value]="account.id">{{ account.name }}</option>
+          }
+        </select>
+      </label>
+      <label>
+        Valor
+        <input type="number" min="0.01" step="0.01" formControlName="amount" />
+      </label>
+      <label>
+        Data
+        <input type="date" formControlName="effectiveDate" />
+      </label>
+      <label class="full-line">
+        Descrição
+        <input formControlName="description" placeholder="Reserva mensal" />
+      </label>
+      <button class="primary-button" type="submit">Criar transferência</button>
+    </form>
+  </div>
+
+  <div class="data-list">
+    @for (transfer of store.transfers(); track transfer.id) {
+      <div class="data-row">
+        <span>{{ transfer.description || 'Transferencia' }}</span>
+        <strong>{{ transfer.amount }}</strong>
+        <small>{{ transfer.effectiveDate }} · {{ transfer.status }}</small>
+      </div>
+    } @empty {
+      <p class="empty-state">As transferências criadas nesta sessão aparecerão aqui.</p>
+    }
+  </div>
+</article>

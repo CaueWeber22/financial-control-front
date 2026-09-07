@@ -1,0 +1,33 @@
+<article class="panel">
+  <div class="section-heading inline">
+    <div>
+      <p class="eyebrow">Resumo</p>
+      <h2>Resultado por moeda</h2>
+    </div>
+    <button class="secondary-button compact" type="button" (click)="loadSummary()">Atualizar</button>
+  </div>
+
+  <form [formGroup]="summaryForm" (ngSubmit)="loadSummary()" class="form-grid inline-form">
+    <label>
+      De
+      <input type="date" formControlName="from" />
+    </label>
+    <label>
+      Até
+      <input type="date" formControlName="to" />
+    </label>
+    <button class="primary-button" type="submit">Filtrar</button>
+  </form>
+
+  <div class="data-list">
+    @for (row of store.summary(); track row.currency) {
+      <div class="data-row">
+        <span>{{ row.currency }}</span>
+        <strong>{{ money(row.result, row.currency) }}</strong>
+        <small>Receitas {{ money(row.income, row.currency) }} · Despesas {{ money(row.expense, row.currency) }}</small>
+      </div>
+    } @empty {
+      <p class="empty-state">Sem movimentações no período selecionado.</p>
+    }
+  </div>
+</article>

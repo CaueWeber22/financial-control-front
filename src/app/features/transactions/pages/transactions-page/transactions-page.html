@@ -1,0 +1,68 @@
+<article class="panel split-panel">
+  <div>
+    <div class="section-heading">
+      <p class="eyebrow">Lançamentos</p>
+      <h2>Receitas e despesas</h2>
+    </div>
+
+    <form [formGroup]="transactionForm" (ngSubmit)="createTransaction()" class="form-grid">
+      <label>
+        Conta
+        <select formControlName="accountId">
+          <option value="">Selecione</option>
+          @for (account of store.accounts(); track account.id) {
+            <option [value]="account.id">{{ account.name }}</option>
+          }
+        </select>
+      </label>
+      <label>
+        Categoria
+        <select formControlName="categoryId">
+          <option value="">Selecione</option>
+          @for (category of store.categories(); track category.id) {
+            <option [value]="category.id">{{ category.name }}</option>
+          }
+        </select>
+      </label>
+      <label>
+        Tipo
+        <select formControlName="type">
+          <option value="EXPENSE">Despesa</option>
+          <option value="INCOME">Receita</option>
+        </select>
+      </label>
+      <label>
+        Status
+        <select formControlName="status">
+          <option value="CLEARED">Confirmado</option>
+          <option value="PENDING">Pendente</option>
+        </select>
+      </label>
+      <label>
+        Valor
+        <input type="number" min="0.01" step="0.01" formControlName="amount" />
+      </label>
+      <label>
+        Data
+        <input type="date" formControlName="effectiveDate" />
+      </label>
+      <label class="full-line">
+        Descrição
+        <input formControlName="description" placeholder="Supermercado" />
+      </label>
+      <button class="primary-button" type="submit">Salvar lançamento</button>
+    </form>
+  </div>
+
+  <div class="data-list">
+    @for (transaction of store.transactions(); track transaction.id) {
+      <div class="data-row">
+        <span>{{ transaction.description || transaction.type }}</span>
+        <strong>{{ money(transaction.amount) }}</strong>
+        <small>{{ transaction.effectiveDate }} · {{ transaction.status }}</small>
+      </div>
+    } @empty {
+      <p class="empty-state">Nenhum lançamento encontrado para exibir.</p>
+    }
+  </div>
+</article>

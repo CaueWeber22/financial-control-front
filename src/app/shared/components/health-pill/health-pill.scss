@@ -1,0 +1,23 @@
+.health-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: max-content;
+  padding: 10px 14px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: var(--surface-muted);
+  font-weight: 700;
+}
+
+.health-pill span {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #bcc8d7;
+}
+
+.health-pill.online span {
+  background: var(--secondary);
+  box-shadow: 0 0 0 6px rgba(40, 215, 189, 0.16);
+}

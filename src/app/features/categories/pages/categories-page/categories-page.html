@@ -1,0 +1,33 @@
+<article class="panel split-panel">
+  <div>
+    <div class="section-heading">
+      <p class="eyebrow">Categorias</p>
+      <h2>Classificar movimentos</h2>
+    </div>
+
+    <form [formGroup]="categoryForm" (ngSubmit)="createCategory()" class="form-grid">
+      <label>
+        Nome
+        <input formControlName="name" placeholder="Supermercado" />
+      </label>
+      <label>
+        Tipo
+        <select formControlName="kind">
+          <option value="EXPENSE">Despesa</option>
+          <option value="INCOME">Receita</option>
+        </select>
+      </label>
+      <button class="primary-button" type="submit">Salvar categoria</button>
+    </form>
+  </div>
+
+  <div class="tag-grid">
+    @for (category of store.categories(); track category.id) {
+      <span class="tag" [class.income]="category.kind === 'INCOME'">
+        {{ category.name }} · {{ category.kind === 'INCOME' ? 'Receita' : 'Despesa' }}
+      </span>
+    } @empty {
+      <p class="empty-state">Nenhuma categoria ativa. Crie uma para classificar seus lançamentos.</p>
+    }
+  </div>
+</article>

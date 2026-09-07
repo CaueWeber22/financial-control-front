@@ -1,0 +1,34 @@
+<section class="dashboard-overview" aria-label="Visão geral financeira">
+  <article class="balance-card">
+    <span class="balance-label">Resultado deste mês</span>
+    <strong class="balance-value">{{ money(store.summaryResult()) }}</strong>
+    <p class="balance-foot">Receitas menos despesas confirmadas</p>
+  </article>
+
+  <div class="metric-stack">
+    <app-metric-card label="Contas ativas" [value]="store.accounts().length" />
+    <app-metric-card label="Categorias em uso" [value]="store.categories().length" />
+  </div>
+</section>
+
+<article class="panel ledger-panel">
+  <div class="section-heading inline">
+    <div>
+      <p class="eyebrow">Últimos registros</p>
+      <h2>Movimentações recentes</h2>
+    </div>
+    <a class="secondary-button compact" routerLink="/transactions">Novo lançamento</a>
+  </div>
+
+  <div class="data-list">
+    @for (transaction of store.transactions(); track transaction.id) {
+      <div class="data-row" [class.expense]="isExpense(transaction.type)">
+        <span>{{ transaction.description || transaction.type }}</span>
+        <strong>{{ amountWithSignal(transaction.amount, transaction.type) }}</strong>
+        <small>{{ dateLabel(transaction.effectiveDate) }} · {{ statusLabel(transaction.status) }}</small>
+      </div>
+    } @empty {
+      <p class="empty-state">Nenhum lançamento ainda. Registre uma receita ou despesa para começar.</p>
+    }
+  </div>
+</article>

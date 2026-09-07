@@ -1,0 +1,43 @@
+<main class="workspace-shell">
+  <aside class="sidebar">
+    <a class="brand" routerLink="/" aria-label="Ir para o resumo">
+      <span class="brand-mark" aria-hidden="true"><i></i></span>
+      <span class="brand-name">coin<em>trol</em></span>
+    </a>
+
+    <div class="profile-block">
+      <span>Sessão de</span>
+      <strong>{{ session.profile()?.first_name || 'Usuário' }} {{ session.profile()?.last_name || '' }}</strong>
+      <small>{{ session.profile()?.email }}</small>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Áreas financeiras">
+      @for (item of navigation; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/' }">
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-footer">
+      <span>Ambiente seguro</span>
+      <button class="ghost-button" type="button" (click)="logout()">Encerrar sessão</button>
+    </div>
+  </aside>
+
+  <section class="main-area">
+    <header class="topbar">
+      <div class="topbar-copy">
+        <p>{{ todayLabel }}</p>
+        <strong>Seu dinheiro, com contexto.</strong>
+      </div>
+      <app-health-pill [status]="session.apiStatus()" />
+    </header>
+
+    <section class="content">
+      <router-outlet />
+    </section>
+  </section>
+
+  <app-toast [message]="session.message()" [error]="session.error()" />
+</main>
