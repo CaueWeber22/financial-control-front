@@ -1,8 +1,16 @@
-<article class="panel split-panel">
+<header class="page-header">
   <div>
+    <p class="page-context">Organização</p>
+    <h1>Categorias</h1>
+    <p class="page-description">Dê nome aos hábitos para entender para onde o mês está indo.</p>
+  </div>
+</header>
+
+<article class="workspace-card">
+  <section class="editor-pane">
     <div class="section-heading">
-      <p class="eyebrow">Categorias</p>
-      <h2>Classificar movimentos</h2>
+      <h2>Adicionar categoria</h2>
+      <p>Separe receitas e despesas com nomes fáceis de reconhecer.</p>
     </div>
 
     <form [formGroup]="categoryForm" (ngSubmit)="createCategory()" class="form-grid">
@@ -19,15 +27,27 @@
       </label>
       <button class="primary-button" type="submit">Salvar categoria</button>
     </form>
-  </div>
+  </section>
 
-  <div class="tag-grid">
-    @for (category of store.categories(); track category.id) {
-      <span class="tag" [class.income]="category.kind === 'INCOME'">
-        {{ category.name }} · {{ category.kind === 'INCOME' ? 'Receita' : 'Despesa' }}
-      </span>
-    } @empty {
-      <p class="empty-state">Nenhuma categoria ativa. Crie uma para classificar seus lançamentos.</p>
-    }
-  </div>
+  <section class="collection-pane">
+    <header class="collection-header">
+      <div>
+        <h2>Em uso</h2>
+        <p>As categorias aparecem ao registrar um movimento.</p>
+      </div>
+      <span class="count-badge">{{ store.categories().length }}</span>
+    </header>
+    <div class="tag-grid">
+      @for (category of store.categories(); track category.id) {
+        <span class="tag" [class.income]="category.kind === 'INCOME'">
+          {{ category.name }}
+          <small>{{ category.kind === 'INCOME' ? 'Receita' : 'Despesa' }}</small>
+        </span>
+      } @empty {
+        <p class="empty-state">
+          Nenhuma categoria ativa. Crie uma para classificar seus lançamentos.
+        </p>
+      }
+    </div>
+  </section>
 </article>

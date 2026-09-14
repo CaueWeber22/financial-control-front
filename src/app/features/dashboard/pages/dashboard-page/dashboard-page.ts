@@ -13,6 +13,10 @@ import { MetricCard } from '../../components/metric-card/metric-card';
 })
 export class DashboardPage {
   protected readonly store = inject(FinanceStoreService);
+  protected readonly monthLabel = new Intl.DateTimeFormat('pt-BR', {
+    month: 'long',
+    year: 'numeric',
+  }).format(new Date());
 
   protected money(value: number): string {
     return new Intl.NumberFormat('pt-BR', {

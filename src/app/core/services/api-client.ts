@@ -67,8 +67,8 @@ export interface Transfer {
 export interface SummaryRow {
   currency: string;
   income: number;
-  expense: number;
-  result: number;
+  expenses: number;
+  net: number;
 }
 
 export interface PageResponse<T> {

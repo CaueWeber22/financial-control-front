@@ -1,8 +1,16 @@
-<article class="panel split-panel">
+<header class="page-header">
   <div>
+    <p class="page-context">Estrutura financeira</p>
+    <h1>Suas contas</h1>
+    <p class="page-description">Organize onde o dinheiro entra, fica reservado e circula.</p>
+  </div>
+</header>
+
+<article class="workspace-card">
+  <section class="editor-pane">
     <div class="section-heading">
-      <p class="eyebrow">Contas</p>
-      <h2>Nova conta</h2>
+      <h2>Adicionar conta</h2>
+      <p>Informe o saldo de partida para manter o histórico coerente.</p>
     </div>
 
     <form [formGroup]="accountForm" (ngSubmit)="createAccount()" class="form-grid">
@@ -29,17 +37,28 @@
       </label>
       <button class="primary-button" type="submit">Salvar conta</button>
     </form>
-  </div>
+  </section>
 
-  <div class="data-list">
-    @for (account of store.accounts(); track account.id) {
-      <button class="data-row clickable" type="button" (click)="loadBalance(account.id)">
-        <span>{{ account.name }}</span>
-        <strong>{{ account.currency }}</strong>
-        <small>{{ account.type }} · {{ account.status }}</small>
-      </button>
-    } @empty {
-      <p class="empty-state">Nenhuma conta ativa. Cadastre a primeira para organizar seus movimentos.</p>
-    }
-  </div>
+  <section class="collection-pane">
+    <header class="collection-header">
+      <div>
+        <h2>Contas ativas</h2>
+        <p>Selecione uma conta para consultar o saldo projetado.</p>
+      </div>
+      <span class="count-badge">{{ store.accounts().length }}</span>
+    </header>
+    <div class="data-list">
+      @for (account of store.accounts(); track account.id) {
+        <button class="data-row clickable" type="button" (click)="loadBalance(account.id)">
+          <span>{{ account.name }}</span>
+          <strong>{{ account.currency }}</strong>
+          <small>{{ account.type }} · {{ account.status }}</small>
+        </button>
+      } @empty {
+        <p class="empty-state">
+          Nenhuma conta ativa. Cadastre a primeira para organizar seus movimentos.
+        </p>
+      }
+    </div>
+  </section>
 </article>

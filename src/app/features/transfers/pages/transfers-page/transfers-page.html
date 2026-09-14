@@ -1,8 +1,18 @@
-<article class="panel split-panel">
+<header class="page-header">
   <div>
+    <p class="page-context">Entre contas</p>
+    <h1>Transferências</h1>
+    <p class="page-description">
+      Mova valores sem transformar a transferência em receita ou despesa.
+    </p>
+  </div>
+</header>
+
+<article class="workspace-card">
+  <section class="editor-pane">
     <div class="section-heading">
-      <p class="eyebrow">Transferências</p>
-      <h2>Mover entre contas</h2>
+      <h2>Nova transferência</h2>
+      <p>Escolha contas diferentes para origem e destino.</p>
     </div>
 
     <form [formGroup]="transferForm" (ngSubmit)="createTransfer()" class="form-grid">
@@ -38,17 +48,26 @@
       </label>
       <button class="primary-button" type="submit">Criar transferência</button>
     </form>
-  </div>
+  </section>
 
-  <div class="data-list">
-    @for (transfer of store.transfers(); track transfer.id) {
-      <div class="data-row">
-        <span>{{ transfer.description || 'Transferencia' }}</span>
-        <strong>{{ transfer.amount }}</strong>
-        <small>{{ transfer.effectiveDate }} · {{ transfer.status }}</small>
+  <section class="collection-pane">
+    <header class="collection-header">
+      <div>
+        <h2>Transferências da sessão</h2>
+        <p>Acompanhe os movimentos criados agora.</p>
       </div>
-    } @empty {
-      <p class="empty-state">As transferências criadas nesta sessão aparecerão aqui.</p>
-    }
-  </div>
+      <span class="count-badge">{{ store.transfers().length }}</span>
+    </header>
+    <div class="data-list">
+      @for (transfer of store.transfers(); track transfer.id) {
+        <div class="data-row">
+          <span>{{ transfer.description || 'Transferência' }}</span>
+          <strong>{{ transfer.amount }}</strong>
+          <small>{{ transfer.effectiveDate }} · {{ transfer.status }}</small>
+        </div>
+      } @empty {
+        <p class="empty-state">As transferências criadas nesta sessão aparecerão aqui.</p>
+      }
+    </div>
+  </section>
 </article>

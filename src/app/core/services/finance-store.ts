@@ -16,7 +16,7 @@ export class FinanceStoreService {
   readonly transfers = signal<Transfer[]>([]);
   readonly summary = signal<SummaryRow[]>([]);
   readonly summaryResult = computed(() =>
-    this.summary().reduce((total, row) => total + Number(row.result || 0), 0)
+    this.summary().reduce((total, row) => total + Number(row.net || 0), 0)
   );
 
   loadWorkspace(): void {

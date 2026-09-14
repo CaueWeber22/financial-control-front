@@ -1,8 +1,16 @@
-<article class="panel split-panel">
+<header class="page-header">
   <div>
+    <p class="page-context">Movimentação</p>
+    <h1>Receitas e despesas</h1>
+    <p class="page-description">Registre o que aconteceu; o resumo do mês se atualiza com você.</p>
+  </div>
+</header>
+
+<article class="workspace-card">
+  <section class="editor-pane">
     <div class="section-heading">
-      <p class="eyebrow">Lançamentos</p>
-      <h2>Receitas e despesas</h2>
+      <h2>Novo lançamento</h2>
+      <p>Use a data em que o movimento realmente aconteceu.</p>
     </div>
 
     <form [formGroup]="transactionForm" (ngSubmit)="createTransaction()" class="form-grid">
@@ -52,17 +60,26 @@
       </label>
       <button class="primary-button" type="submit">Salvar lançamento</button>
     </form>
-  </div>
+  </section>
 
-  <div class="data-list">
-    @for (transaction of store.transactions(); track transaction.id) {
-      <div class="data-row">
-        <span>{{ transaction.description || transaction.type }}</span>
-        <strong>{{ money(transaction.amount) }}</strong>
-        <small>{{ transaction.effectiveDate }} · {{ transaction.status }}</small>
+  <section class="collection-pane">
+    <header class="collection-header">
+      <div>
+        <h2>Últimos lançamentos</h2>
+        <p>Os registros mais recentes aparecem primeiro.</p>
       </div>
-    } @empty {
-      <p class="empty-state">Nenhum lançamento encontrado para exibir.</p>
-    }
-  </div>
+      <span class="count-badge">{{ store.transactions().length }}</span>
+    </header>
+    <div class="data-list">
+      @for (transaction of store.transactions(); track transaction.id) {
+        <div class="data-row">
+          <span>{{ transaction.description || transaction.type }}</span>
+          <strong>{{ money(transaction.amount) }}</strong>
+          <small>{{ transaction.effectiveDate }} · {{ transaction.status }}</small>
+        </div>
+      } @empty {
+        <p class="empty-state">Nenhum lançamento encontrado para exibir.</p>
+      }
+    </div>
+  </section>
 </article>

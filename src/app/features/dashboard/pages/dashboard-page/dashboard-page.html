@@ -1,11 +1,25 @@
-<section class="dashboard-overview" aria-label="Visão geral financeira">
-  <article class="balance-card">
-    <span class="balance-label">Resultado deste mês</span>
-    <strong class="balance-value">{{ money(store.summaryResult()) }}</strong>
-    <p class="balance-foot">Receitas menos despesas confirmadas</p>
-  </article>
+<header class="page-header">
+  <div>
+    <p class="page-context">Visão geral</p>
+    <h1>Seu mês, em perspectiva.</h1>
+    <p class="page-description">Acompanhe o resultado e retome de onde parou.</p>
+  </div>
+  <a class="primary-button" routerLink="/transactions">Registrar movimento</a>
+</header>
 
-  <div class="metric-stack">
+<section class="month-statement" aria-label="Fechamento mensal">
+  <div class="statement-meta">
+    <span>{{ monthLabel }}</span>
+    <span>Fechamento parcial</span>
+  </div>
+
+  <div class="statement-result">
+    <span>Resultado do mês</span>
+    <strong>{{ money(store.summaryResult()) }}</strong>
+    <small>Receitas menos despesas confirmadas</small>
+  </div>
+
+  <div class="statement-facts">
     <app-metric-card label="Contas ativas" [value]="store.accounts().length" />
     <app-metric-card label="Categorias em uso" [value]="store.categories().length" />
   </div>
@@ -14,10 +28,10 @@
 <article class="panel ledger-panel">
   <div class="section-heading inline">
     <div>
-      <p class="eyebrow">Últimos registros</p>
+      <p class="page-context">Últimos registros</p>
       <h2>Movimentações recentes</h2>
     </div>
-    <a class="secondary-button compact" routerLink="/transactions">Novo lançamento</a>
+    <a class="text-link" routerLink="/transactions">Ver todos</a>
   </div>
 
   <div class="data-list">
@@ -25,10 +39,14 @@
       <div class="data-row" [class.expense]="isExpense(transaction.type)">
         <span>{{ transaction.description || transaction.type }}</span>
         <strong>{{ amountWithSignal(transaction.amount, transaction.type) }}</strong>
-        <small>{{ dateLabel(transaction.effectiveDate) }} · {{ statusLabel(transaction.status) }}</small>
+        <small
+          >{{ dateLabel(transaction.effectiveDate) }} · {{ statusLabel(transaction.status) }}</small
+        >
       </div>
     } @empty {
-      <p class="empty-state">Nenhum lançamento ainda. Registre uma receita ou despesa para começar.</p>
+      <p class="empty-state">
+        Nenhum lançamento ainda. Registre uma receita ou despesa para começar.
+      </p>
     }
   </div>
 </article>

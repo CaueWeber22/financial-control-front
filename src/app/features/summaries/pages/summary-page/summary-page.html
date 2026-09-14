@@ -1,31 +1,51 @@
-<article class="panel">
-  <div class="section-heading inline">
+<header class="page-header">
+  <div>
+    <p class="page-context">Análise</p>
+    <h1>Resultado por período</h1>
+    <p class="page-description">Compare receitas e despesas sem misturar moedas.</p>
+  </div>
+  <button class="secondary-button" type="button" (click)="loadSummary()">Atualizar dados</button>
+</header>
+
+<article class="report-card">
+  <div class="report-filter">
     <div>
-      <p class="eyebrow">Resumo</p>
-      <h2>Resultado por moeda</h2>
+      <h2>Período do relatório</h2>
+      <p>Escolha o intervalo que deseja analisar.</p>
     </div>
-    <button class="secondary-button compact" type="button" (click)="loadSummary()">Atualizar</button>
+
+    <form [formGroup]="summaryForm" (ngSubmit)="loadSummary()" class="form-grid inline-form">
+      <label>
+        De
+        <input type="date" formControlName="from" />
+      </label>
+      <label>
+        Até
+        <input type="date" formControlName="to" />
+      </label>
+      <button class="primary-button" type="submit">Aplicar período</button>
+    </form>
   </div>
 
-  <form [formGroup]="summaryForm" (ngSubmit)="loadSummary()" class="form-grid inline-form">
-    <label>
-      De
-      <input type="date" formControlName="from" />
-    </label>
-    <label>
-      Até
-      <input type="date" formControlName="to" />
-    </label>
-    <button class="primary-button" type="submit">Filtrar</button>
-  </form>
-
-  <div class="data-list">
+  <div class="report-results">
     @for (row of store.summary(); track row.currency) {
-      <div class="data-row">
-        <span>{{ row.currency }}</span>
-        <strong>{{ money(row.result, row.currency) }}</strong>
-        <small>Receitas {{ money(row.income, row.currency) }} · Despesas {{ money(row.expense, row.currency) }}</small>
-      </div>
+      <article class="currency-result">
+        <header>
+          <span>{{ row.currency }}</span>
+          <small>Resultado líquido</small>
+        </header>
+        <strong>{{ money(row.net, row.currency) }}</strong>
+        <dl>
+          <div>
+            <dt>Receitas</dt>
+            <dd>{{ money(row.income, row.currency) }}</dd>
+          </div>
+          <div>
+            <dt>Despesas</dt>
+            <dd>{{ money(row.expenses, row.currency) }}</dd>
+          </div>
+        </dl>
+      </article>
     } @empty {
       <p class="empty-state">Sem movimentações no período selecionado.</p>
     }
