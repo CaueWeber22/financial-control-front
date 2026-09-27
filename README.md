@@ -1,11 +1,11 @@
 # Front-end Control
 
-Aplicacao Angular 21 LTS para consumir o backend Cointrol em `http://localhost:8080`.
+Aplicacao Angular 21 LTS para consumir o backend Cointrol em `https://cointrol-backend.onrender.com`.
 
 ## Requisitos
 
 - Node.js compativel com Angular 21 (`^20.19.0`, `^22.12.0` ou `^24.0.0`).
-- Backend rodando em `http://localhost:8080`.
+- Acesso ao backend em `https://cointrol-backend.onrender.com`.
 
 ## Como rodar
 
@@ -14,7 +14,9 @@ npm install
 npm start
 ```
 
-O script `npm start` usa `proxy.conf.json`, entao o front chama `/api/v1` e o Angular encaminha para `http://localhost:8080`.
+As chamadas usam diretamente `https://cointrol-backend.onrender.com/api/v1`, e o health check usa `/actuator/health` no mesmo backend. A URL base fica em `src/environments/environment.ts` e vale para desenvolvimento e build de producao.
+
+O backend precisa permitir a origem do frontend via CORS, incluindo os headers `Authorization`, `Content-Type` e `Idempotency-Key`. O proxy de desenvolvimento tambem aponta para o Render caso sejam usadas rotas relativas `/api` ou `/actuator`.
 
 ## Funcionalidades iniciais
 

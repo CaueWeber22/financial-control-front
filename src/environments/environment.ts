@@ -1,5 +1,7 @@
+const backendUrl = 'https://cointrol-backend.onrender.com';
+
 export const environment = {
   production: false,
-  apiBaseUrl: '/api/v1',
-  healthUrl: '/actuator/health'
+  apiBaseUrl: `${backendUrl}/api/v1`,
+  healthUrl: `${backendUrl}/actuator/health`
 };
