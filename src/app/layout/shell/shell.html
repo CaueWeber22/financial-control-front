@@ -21,7 +21,7 @@
 
     <div class="sidebar-footer">
       <span>Ambiente seguro</span>
-      <button class="ghost-button" type="button" (click)="logout()">Encerrar sessão</button>
+      <button class="ghost-button" type="button" [disabled]="session.loading()" (click)="logout()">Encerrar sessão</button>
     </div>
   </aside>
 

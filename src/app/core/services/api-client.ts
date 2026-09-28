@@ -3,13 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-
-export interface AuthTokens {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
-  type: 'Bearer';
-}
+import { CookieAuthService } from './cookie-auth';
 
 export interface UserProfile {
   id: string;
@@ -89,22 +83,23 @@ export interface ProblemDetails {
 @Injectable({ providedIn: 'root' })
 export class ApiClientService {
   private readonly http = inject(HttpClient);
+  private readonly cookieAuth = inject(CookieAuthService);
   private readonly baseUrl = environment.apiBaseUrl;
 
   register(payload: Record<string, unknown>): Observable<UserProfile> {
     return this.http.post<UserProfile>(`${this.baseUrl}/users`, payload);
   }
 
-  login(email: string, password: string): Observable<AuthTokens> {
-    return this.http.post<AuthTokens>(`${this.baseUrl}/auth/login`, { email, password });
+  login(email: string, password: string): Observable<void> {
+    return this.cookieAuth.login(email, password);
   }
 
-  refresh(refreshToken: string): Observable<AuthTokens> {
-    return this.http.post<AuthTokens>(`${this.baseUrl}/auth/refresh`, { refreshToken });
+  refresh(): Observable<void> {
+    return this.cookieAuth.refresh();
   }
 
-  logout(refreshToken: string): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/auth/logout`, { refreshToken });
+  logout(): Observable<void> {
+    return this.cookieAuth.logout();
   }
 
   getMe(): Observable<UserProfile> {

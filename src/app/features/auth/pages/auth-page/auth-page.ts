@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ElementRef, Injector, afterNextRender, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { SessionService } from '../../../../core/services/session';
@@ -13,7 +13,10 @@ import { Toast } from '../../../../shared/components/toast/toast';
 })
 export class AuthPage {
   private readonly fb = inject(FormBuilder);
+  private readonly injector = inject(Injector);
+  private readonly formHeading = viewChild<ElementRef<HTMLHeadingElement>>('formHeading');
   protected readonly session = inject(SessionService);
+  protected readonly showRegistration = signal(false);
 
   protected readonly loginForm = this.fb.nonNullable.group({
     email: ['', [Validators.required, Validators.email]],
@@ -21,13 +24,13 @@ export class AuthPage {
   });
 
   protected readonly registerForm = this.fb.nonNullable.group({
-    first_name: ['Ada', Validators.required],
-    last_name: ['Lovelace', Validators.required],
-    email: ['ada@example.com', [Validators.required, Validators.email]],
-    phone: ['+55 11 99999-9999'],
-    gender: ['female', Validators.required],
-    date_of_birth: ['1990-01-01', Validators.required],
-    password: ['Valid@123', Validators.required]
+    first_name: ['', Validators.required],
+    last_name: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    phone: [''],
+    gender: ['', Validators.required],
+    date_of_birth: ['', Validators.required],
+    password: ['', Validators.required]
   });
 
   constructor() {
@@ -53,8 +56,27 @@ export class AuthPage {
     this.session.register(this.registerForm.getRawValue(), () => {
       this.loginForm.patchValue({
         email: this.registerForm.controls.email.value,
-        password: this.registerForm.controls.password.value
+        password: ''
       });
+      this.registerForm.reset();
+      this.showRegistration.set(false);
+      this.focusHeading();
     });
+  }
+
+  protected openRegistration(): void {
+    this.showRegistration.set(true);
+    this.session.showMessage('');
+    this.focusHeading();
+  }
+
+  protected backToLogin(): void {
+    this.showRegistration.set(false);
+    this.session.showMessage('');
+    this.focusHeading();
+  }
+
+  private focusHeading(): void {
+    afterNextRender(() => this.formHeading()?.nativeElement.focus(), { injector: this.injector });
   }
 }

@@ -1,3 +1,157 @@
 :host {
   display: block;
 }
+
+.access-page {
+  display: flex;
+  min-height: 100svh;
+  flex-direction: column;
+  padding: 32px clamp(20px, 5vw, 72px);
+  background: var(--paper);
+}
+
+.access-header {
+  display: flex;
+  flex-wrap: wrap;
+  width: min(100%, 1000px);
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 0 auto 48px;
+}
+
+.access-header .brand-name em {
+  color: var(--positive);
+}
+
+.access-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  width: min(100%, 1000px);
+  margin: auto;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: var(--shadow-low);
+}
+
+.access-form-panel {
+  min-width: 0;
+  padding: clamp(28px, 4.5vw, 64px);
+}
+
+.access-form-heading {
+  margin-bottom: 32px;
+}
+
+.access-form-heading h1 {
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
+  line-height: 1.15;
+}
+
+.access-form-heading p {
+  margin: 12px 0 0;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.access-form-panel .form-grid {
+  gap: 20px;
+}
+
+.access-form-panel .primary-button {
+  margin-top: 8px;
+}
+
+.access-invite {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 56px;
+  padding: clamp(28px, 4.5vw, 64px);
+  color: #ffffff;
+  background: var(--petrol);
+}
+
+.access-invite h2 {
+  max-width: 12ch;
+  color: inherit;
+  font-size: clamp(2rem, 3.3vw, 3rem);
+  line-height: 1.15;
+}
+
+.access-invite-copy > p {
+  margin: 18px 0 28px;
+  color: #d1e2df;
+  line-height: 1.6;
+}
+
+.access-create-button {
+  min-height: 46px;
+  border: 1px solid var(--mint);
+  border-radius: 7px;
+  padding: 12px 22px;
+  color: var(--petrol);
+  background: var(--mint);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.access-create-button:hover:not(:disabled) {
+  background: #a7e0c1;
+}
+
+.access-invite-footer {
+  margin: 0;
+  color: #b8ccce;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.access-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin: -12px 0 20px;
+  border: 0;
+  padding: 0;
+  color: var(--petrol);
+  background: transparent;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.access-create-button:disabled,
+.access-back:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.access-invite button:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 4px;
+}
+
+.registration-open {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 720px;
+}
+
+.access-footer {
+  margin: 36px 0 0;
+  color: var(--ink-soft);
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 680px) {
+  .access-page { padding: 24px 16px; }
+  .access-header { margin-bottom: 28px; }
+  .access-stage { grid-template-columns: minmax(0, 1fr); }
+  .access-form-panel, .access-invite { padding: 28px 24px; }
+  .access-invite { gap: 28px; }
+  .access-invite h2 { max-width: 20ch; font-size: 1.75rem; }
+  .access-create-button { width: 100%; }
+}

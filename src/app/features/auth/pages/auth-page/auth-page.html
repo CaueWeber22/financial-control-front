@@ -1,31 +1,20 @@
-<main class="auth-shell">
-  <section class="auth-brand">
+<main class="access-page">
+  <header class="access-header">
     <div class="brand">
       <span class="brand-mark" aria-hidden="true"><i></i></span>
       <span class="brand-name">coin<em>trol</em></span>
     </div>
 
-    <div class="auth-statement">
-      <span class="auth-edition">Seu fechamento mensal</span>
-      <h1>Contas claras.<br />Decisões tranquilas.</h1>
-      <p>Reúna saldos, lançamentos e categorias sem perder de vista o que importa no mês.</p>
-    </div>
+    <app-health-pill [status]="session.apiStatus()" />
+  </header>
 
-    <span class="auth-brand-foot">Controle financeiro pessoal, sem ruído.</span>
-  </section>
-
-  <section class="auth-content">
-    <header class="auth-content-header">
-      <p>Entre na sua conta ou crie seu acesso.</p>
-      <app-health-pill [status]="session.apiStatus()" />
-    </header>
-
-    <div class="auth-layout">
-      <article class="panel auth-panel auth-panel-primary">
-        <div class="section-heading">
-          <p class="eyebrow">Bem-vindo de volta</p>
-          <h2>Acesse sua conta</h2>
-        </div>
+  <section class="access-stage" [class.registration-open]="showRegistration()" aria-label="Acesso ao Cointrol">
+    @if (!showRegistration()) {
+      <article class="access-form-panel">
+        <header class="access-form-heading">
+          <h1 #formHeading tabindex="-1">Acesse sua conta</h1>
+          <p>Entre para acompanhar seu dinheiro.</p>
+        </header>
 
         <form [formGroup]="loginForm" (ngSubmit)="login()" class="form-grid">
           <label>
@@ -34,7 +23,7 @@
               type="email"
               formControlName="email"
               autocomplete="email"
-              placeholder="ada@example.com"
+              placeholder="seu@email.com"
             />
           </label>
 
@@ -44,46 +33,61 @@
               type="password"
               formControlName="password"
               autocomplete="current-password"
-              placeholder="Valid@123"
+              placeholder="Sua senha"
             />
           </label>
 
           <button class="primary-button" type="submit" [disabled]="session.loading()">
-            Entrar
+            {{ session.loading() ? 'Entrando…' : 'Entrar' }}
           </button>
         </form>
       </article>
 
-      <article class="panel auth-panel auth-panel-secondary">
-        <div class="section-heading">
-          <p class="eyebrow">Primeiro acesso</p>
-          <h2>Criar acesso</h2>
+      <aside class="access-invite" aria-labelledby="invite-heading">
+        <div class="access-invite-copy">
+          <h2 id="invite-heading">Ainda não tem uma conta?</h2>
+          <p>Crie seu acesso gratuitamente.</p>
+          <button class="access-create-button" type="button" [disabled]="session.loading()" (click)="openRegistration()">
+            Criar minha conta
+          </button>
         </div>
+        <p class="access-invite-footer">Contas claras. Decisões tranquilas.</p>
+      </aside>
+    } @else {
+      <article class="access-form-panel access-registration">
+        <button class="access-back" type="button" [disabled]="session.loading()" (click)="backToLogin()">
+          <span aria-hidden="true">←</span> Voltar para entrar
+        </button>
+        <header class="access-form-heading">
+          <h1 #formHeading tabindex="-1">Crie sua conta</h1>
+          <p>Preencha seus dados para começar.</p>
+        </header>
 
         <form [formGroup]="registerForm" (ngSubmit)="register()" class="form-grid two-columns">
           <label>
             Nome
-            <input formControlName="first_name" placeholder="Ada" />
+            <input formControlName="first_name" autocomplete="given-name" placeholder="Seu nome" />
           </label>
 
           <label>
             Sobrenome
-            <input formControlName="last_name" placeholder="Lovelace" />
+            <input formControlName="last_name" autocomplete="family-name" placeholder="Seu sobrenome" />
           </label>
 
           <label>
             E-mail
-            <input type="email" formControlName="email" placeholder="ada@example.com" />
+            <input type="email" formControlName="email" autocomplete="email" placeholder="seu@email.com" />
           </label>
 
           <label>
-            Telefone
-            <input formControlName="phone" placeholder="+55 11 99999-9999" />
+            Telefone (opcional)
+            <input type="tel" formControlName="phone" autocomplete="tel" placeholder="+55 11 99999-9999" />
           </label>
 
           <label>
             Gênero
             <select formControlName="gender">
+              <option value="" disabled>Selecione</option>
               <option value="female">Feminino</option>
               <option value="male">Masculino</option>
               <option value="other">Outro</option>
@@ -92,21 +96,23 @@
 
           <label>
             Nascimento
-            <input type="date" formControlName="date_of_birth" />
+            <input type="date" formControlName="date_of_birth" autocomplete="bday" />
           </label>
 
           <label class="full-line">
             Senha
-            <input type="password" formControlName="password" placeholder="Valid@123" />
+            <input type="password" formControlName="password" autocomplete="new-password" placeholder="Crie uma senha" />
           </label>
 
-          <button class="secondary-button full-line" type="submit" [disabled]="session.loading()">
-            Criar usuário
+          <button class="primary-button full-line" type="submit" [disabled]="session.loading()">
+            {{ session.loading() ? 'Criando conta…' : 'Criar minha conta' }}
           </button>
         </form>
       </article>
-    </div>
+    }
   </section>
+
+  <footer class="access-footer">Seu controle financeiro começa aqui.</footer>
 
   <app-toast [message]="session.message()" [error]="session.error()" />
 </main>

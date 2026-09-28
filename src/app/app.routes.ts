@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, Routes } from '@angular/router';
+import { map } from 'rxjs';
 
 import { SessionService } from './core/services/session';
 import { AccountsPage } from './features/accounts/pages/accounts-page/accounts-page';
@@ -15,7 +16,7 @@ const authGuard: CanActivateFn = () => {
   const session = inject(SessionService);
   const router = inject(Router);
 
-  return session.isAuthenticated() || router.createUrlTree(['/auth']);
+  return session.ensureSession().pipe(map(authenticated => authenticated || router.createUrlTree(['/auth'])));
 };
 
 const guestGuard: CanActivateFn = () => {

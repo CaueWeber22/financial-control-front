@@ -30,10 +30,12 @@ describe('authTokenInterceptor', () => {
     environment.apiBaseUrl,
     `${environment.apiBaseUrl}/users/me`,
     `${environment.apiBaseUrl}?page=0`
-  ])('sends the token to the configured API: %s', url => {
+  ])('uses cookies without a stored Bearer token for the configured API: %s', url => {
     client.get(url).subscribe();
     const request = http.expectOne(url);
-    expect(request.request.headers.get('Authorization')).toBe('Bearer test-token');
+    expect(request.request.withCredentials).toBe(true);
+    expect(request.request.headers.has('Authorization')).toBe(false);
+    expect(Storage.prototype.getItem).not.toHaveBeenCalled();
     request.flush({});
   });
 
@@ -45,6 +47,7 @@ describe('authTokenInterceptor', () => {
   ])('does not send the token outside the configured API: %s', url => {
     client.get(url).subscribe();
     const request = http.expectOne(url);
+    expect(request.request.withCredentials).toBe(false);
     expect(request.request.headers.has('Authorization')).toBe(false);
     request.flush({});
   });
