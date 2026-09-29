@@ -124,41 +124,11 @@ h2 {
 }
 
 .brand-mark {
-  position: relative;
-  display: grid;
+  display: block;
   flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
-  place-items: center;
-  border: 2px solid var(--mint);
-  border-radius: 50%;
-}
-
-.brand-mark::before,
-.brand-mark::after {
-  position: absolute;
-  background: var(--mint);
-  content: '';
-}
-
-.brand-mark::before {
-  width: 2px;
-  height: 14px;
-}
-
-.brand-mark::after {
-  width: 14px;
-  height: 2px;
-}
-
-.brand-mark i {
-  position: absolute;
-  right: 3px;
-  bottom: 3px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--saffron);
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 .brand-name {
