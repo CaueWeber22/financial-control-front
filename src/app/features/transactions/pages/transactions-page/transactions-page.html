@@ -1,20 +1,32 @@
-<header class="page-header">
+<header class="page-header transactions-hero">
   <div>
-    <p class="page-context">Movimentação</p>
+    <p class="page-context">Livro do dia</p>
     <h1>Receitas e despesas</h1>
-    <p class="page-description">Registre o que aconteceu; o resumo do mês se atualiza com você.</p>
+    <p class="page-description">Lance cada movimento com rapidez e confira o impacto no historico recente.</p>
   </div>
 </header>
 
-<article class="workspace-card">
+<article class="workspace-card transactions-workspace">
   <section class="editor-pane">
     <div class="section-heading">
       <h2>Novo lançamento</h2>
-      <p>Use a data em que o movimento realmente aconteceu.</p>
+      <p>Use a data real do movimento para manter o mes consistente.</p>
     </div>
 
     <form [formGroup]="transactionForm" (ngSubmit)="createTransaction()" class="form-grid">
-      <label>
+      <fieldset class="type-switch">
+        <legend>Tipo</legend>
+        <label>
+          <input type="radio" value="EXPENSE" formControlName="type" />
+          <span>Despesa</span>
+        </label>
+        <label>
+          <input type="radio" value="INCOME" formControlName="type" />
+          <span>Receita</span>
+        </label>
+      </fieldset>
+
+      <label class="control-field">
         Conta
         <select formControlName="accountId">
           <option value="">Selecione</option>
@@ -23,7 +35,7 @@
           }
         </select>
       </label>
-      <label>
+      <label class="control-field">
         Categoria
         <select formControlName="categoryId">
           <option value="">Selecione</option>
@@ -32,31 +44,24 @@
           }
         </select>
       </label>
-      <label>
-        Tipo
-        <select formControlName="type">
-          <option value="EXPENSE">Despesa</option>
-          <option value="INCOME">Receita</option>
-        </select>
-      </label>
-      <label>
+      <label class="control-field">
         Status
         <select formControlName="status">
           <option value="CLEARED">Confirmado</option>
           <option value="PENDING">Pendente</option>
         </select>
       </label>
-      <label>
+      <label class="control-field amount-field">
         Valor
         <input type="number" min="0.01" step="0.01" formControlName="amount" />
       </label>
-      <label>
+      <label class="control-field">
         Data
         <input type="date" formControlName="effectiveDate" />
       </label>
-      <label class="full-line">
+      <label class="control-field full-line">
         Descrição
-        <input formControlName="description" placeholder="Supermercado" />
+        <input formControlName="description" placeholder="Ex.: supermercado, salario, aluguel" />
       </label>
       <button class="primary-button" type="submit">Salvar lançamento</button>
     </form>
@@ -66,19 +71,30 @@
     <header class="collection-header">
       <div>
         <h2>Últimos lançamentos</h2>
-        <p>Os registros mais recentes aparecem primeiro.</p>
+        <p>Os registros mais recentes aparecem primeiro, com conta e categoria.</p>
       </div>
       <span class="count-badge">{{ store.transactions().length }}</span>
     </header>
     <div class="data-list">
       @for (transaction of store.transactions(); track transaction.id) {
-        <div class="data-row">
-          <span>{{ transaction.description || transaction.type }}</span>
-          <strong>{{ money(transaction.amount) }}</strong>
-          <small>{{ transaction.effectiveDate }} · {{ transaction.status }}</small>
+        <div class="transaction-row" [class.income]="transaction.type === 'INCOME'" [class.expense]="transaction.type === 'EXPENSE'">
+          <div class="transaction-main">
+            <span class="transaction-dot" aria-hidden="true"></span>
+            <div>
+              <span class="transaction-title">{{ transaction.description || typeLabel(transaction.type) }}</span>
+              <small>{{ accountName(transaction.accountId) }} / {{ categoryName(transaction.categoryId) }}</small>
+            </div>
+          </div>
+          <div class="transaction-side">
+            <strong>{{ transaction.type === 'EXPENSE' ? '-' : '+' }}{{ money(transaction.amount) }}</strong>
+            <span class="status-chip">{{ transaction.effectiveDate }} / {{ statusLabel(transaction.status) }}</span>
+          </div>
         </div>
       } @empty {
-        <p class="empty-state">Nenhum lançamento encontrado para exibir.</p>
+        <div class="empty-state transaction-empty">
+          <strong>Nenhum lancamento ainda.</strong>
+          <span>Preencha o formulario ao lado para montar seu historico financeiro.</span>
+        </div>
       }
     </div>
   </section>

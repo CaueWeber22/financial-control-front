@@ -44,4 +44,38 @@ export class TransactionsPage {
       currency: 'BRL'
     }).format(value || 0);
   }
+
+  protected accountName(accountId: string): string {
+    return this.store.accounts().find(account => account.id === accountId)?.name || 'Conta nao encontrada';
+  }
+
+  protected categoryName(categoryId?: string): string {
+    if (!categoryId) {
+      return 'Sem categoria';
+    }
+
+    return this.store.categories().find(category => category.id === categoryId)?.name || 'Categoria removida';
+  }
+
+  protected statusLabel(status: string): string {
+    const labels: Record<string, string> = {
+      CLEARED: 'Confirmado',
+      PENDING: 'Pendente',
+      CANCELED: 'Cancelado'
+    };
+
+    return labels[status] || status;
+  }
+
+  protected typeLabel(type: string): string {
+    const labels: Record<string, string> = {
+      EXPENSE: 'Despesa',
+      INCOME: 'Receita',
+      TRANSFER_IN: 'Transferencia recebida',
+      TRANSFER_OUT: 'Transferencia enviada',
+      OPENING_BALANCE: 'Saldo inicial'
+    };
+
+    return labels[type] || type;
+  }
 }
