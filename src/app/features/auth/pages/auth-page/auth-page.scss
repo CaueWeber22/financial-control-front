@@ -20,6 +20,14 @@
   margin: 0 auto 48px;
 }
 
+.access-header-actions {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 .access-header .brand-name em {
   color: var(--positive);
 }
@@ -70,8 +78,8 @@
   justify-content: center;
   gap: 56px;
   padding: clamp(28px, 4.5vw, 64px);
-  color: #ffffff;
-  background: var(--petrol);
+  color: var(--sidebar-text);
+  background: var(--sidebar-bg);
 }
 
 .access-invite h2 {
@@ -83,7 +91,7 @@
 
 .access-invite-copy > p {
   margin: 18px 0 28px;
-  color: #d1e2df;
+  color: var(--on-strong-muted);
   line-height: 1.6;
 }
 
@@ -92,19 +100,19 @@
   border: 1px solid var(--mint);
   border-radius: 7px;
   padding: 12px 22px;
-  color: var(--petrol);
+  color: var(--on-accent);
   background: var(--mint);
   font-weight: 700;
   cursor: pointer;
 }
 
 .access-create-button:hover:not(:disabled) {
-  background: #a7e0c1;
+  background: color-mix(in srgb, var(--mint), white 18%);
 }
 
 .access-invite-footer {
   margin: 0;
-  color: #b8ccce;
+  color: var(--on-strong-muted);
   font-size: 0.85rem;
   line-height: 1.6;
 }
@@ -130,7 +138,7 @@
 }
 
 .access-invite button:focus-visible {
-  outline: 3px solid #ffffff;
+  outline: 3px solid var(--sidebar-text);
   outline-offset: 4px;
 }
 
@@ -149,6 +157,7 @@
 @media (max-width: 680px) {
   .access-page { padding: 24px 16px; }
   .access-header { margin-bottom: 28px; }
+  .access-header-actions { justify-content: flex-start; }
   .access-stage { grid-template-columns: minmax(0, 1fr); }
   .access-form-panel, .access-invite { padding: 28px 24px; }
   .access-invite { gap: 28px; }

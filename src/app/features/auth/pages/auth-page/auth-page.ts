@@ -2,6 +2,7 @@ import { Component, ElementRef, Injector, afterNextRender, inject, signal, viewC
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { SessionService } from '../../../../core/services/session';
+import { ThemeService } from '../../../../core/services/theme';
 import { HealthPill } from '../../../../shared/components/health-pill/health-pill';
 import { Toast } from '../../../../shared/components/toast/toast';
 
@@ -16,6 +17,7 @@ export class AuthPage {
   private readonly injector = inject(Injector);
   private readonly formHeading = viewChild<ElementRef<HTMLHeadingElement>>('formHeading');
   protected readonly session = inject(SessionService);
+  protected readonly theme = inject(ThemeService);
   protected readonly showRegistration = signal(false);
 
   protected readonly loginForm = this.fb.nonNullable.group({

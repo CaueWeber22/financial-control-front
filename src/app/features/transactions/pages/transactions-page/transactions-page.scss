@@ -32,7 +32,7 @@
 }
 
 .editor-pane {
-  background: #fbfcfa;
+  background: var(--surface-subtle);
 }
 
 .section-heading {
@@ -91,14 +91,14 @@
   border: 1px solid var(--line-strong);
   border-radius: 8px;
   color: var(--petrol);
-  background: rgba(255, 255, 255, 0.74);
+  background: color-mix(in srgb, var(--surface), transparent 18%);
   font-weight: 750;
   transition: border-color 160ms ease, background 160ms ease, color 160ms ease, box-shadow 160ms ease;
 }
 
 .type-switch input:checked + span {
   border-color: var(--petrol);
-  color: #ffffff;
+  color: var(--on-petrol);
   background: var(--petrol);
 }
 
@@ -128,7 +128,7 @@
 }
 
 .primary-button:hover {
-  background: #0b2d37;
+  background: var(--button-petrol-hover);
 }
 
 .collection-pane {
@@ -143,7 +143,7 @@
 
 .count-badge {
   background: var(--petrol);
-  color: #ffffff;
+  color: var(--on-petrol);
 }
 
 .data-list {

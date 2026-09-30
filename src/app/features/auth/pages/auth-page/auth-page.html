@@ -5,7 +5,21 @@
       <span class="brand-name">coin<em>trol</em></span>
     </div>
 
-    <app-health-pill [status]="session.apiStatus()" />
+    <div class="access-header-actions">
+      <button
+        class="theme-toggle"
+        type="button"
+        [attr.aria-pressed]="theme.isDark()"
+        [attr.aria-label]="theme.isDark() ? 'Ativar modo claro' : 'Ativar modo escuro'"
+        (click)="theme.toggle()"
+      >
+        <span class="theme-toggle-track" aria-hidden="true">
+          <span class="theme-toggle-thumb"></span>
+        </span>
+        <span>{{ theme.isDark() ? 'Claro' : 'Escuro' }}</span>
+      </button>
+      <app-health-pill [status]="session.apiStatus()" />
+    </div>
   </header>
 
   <section class="access-stage" [class.registration-open]="showRegistration()" aria-label="Acesso ao Cointrol">

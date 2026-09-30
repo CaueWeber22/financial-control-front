@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 import { FinanceStoreService } from '../../core/services/finance-store';
 import { SessionService } from '../../core/services/session';
+import { ThemeService } from '../../core/services/theme';
 import { HealthPill } from '../../shared/components/health-pill/health-pill';
 import { Toast } from '../../shared/components/toast/toast';
 
@@ -15,6 +16,7 @@ import { Toast } from '../../shared/components/toast/toast';
 export class Shell {
   protected readonly session = inject(SessionService);
   protected readonly store = inject(FinanceStoreService);
+  protected readonly theme = inject(ThemeService);
   protected readonly navigation = [
     { path: '/', label: 'Resumo' },
     { path: '/accounts', label: 'Contas' },
