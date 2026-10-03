@@ -12,18 +12,30 @@ import { TransactionsPage } from './features/transactions/pages/transactions-pag
 import { TransfersPage } from './features/transfers/pages/transfers-page/transfers-page';
 import { Shell } from './layout/shell/shell';
 
-const authGuard: CanActivateFn = () => {
+export function safeRedirectTo(value: string | null | undefined): string {
+  if (!value || !value.startsWith('/') || value.startsWith('//') || value.startsWith('/auth')) {
+    return '/';
+  }
+
+  return value;
+}
+
+export const authGuard: CanActivateFn = (_route, state) => {
   const session = inject(SessionService);
   const router = inject(Router);
 
-  return session.ensureSession().pipe(map(authenticated => authenticated || router.createUrlTree(['/auth'])));
+  return session.ensureSession().pipe(
+    map(authenticated => authenticated || router.createUrlTree(['/auth'], {
+      queryParams: { redirectTo: safeRedirectTo(state.url) }
+    }))
+  );
 };
 
-const guestGuard: CanActivateFn = () => {
+export const guestGuard: CanActivateFn = (route) => {
   const session = inject(SessionService);
   const router = inject(Router);
 
-  return !session.isAuthenticated() || router.createUrlTree(['/']);
+  return !session.isAuthenticated() || router.parseUrl(safeRedirectTo(route.queryParamMap.get('redirectTo')));
 };
 
 export const routes: Routes = [
@@ -60,11 +72,11 @@ export const routes: Routes = [
       {
         path: 'summary',
         component: SummaryPage
+      },
+      {
+        path: '**',
+        redirectTo: ''
       }
     ]
-  },
-  {
-    path: '**',
-    redirectTo: ''
   }
 ];

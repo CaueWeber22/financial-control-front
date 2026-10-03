@@ -43,7 +43,7 @@ describe('authTokenInterceptor', () => {
     environment.healthUrl,
     'https://example.com/api/v1/users/me',
     `${environment.apiBaseUrl}-other/users/me`,
-    '/api/v1/users/me'
+    '/api/v10/users/me'
   ])('does not send the token outside the configured API: %s', url => {
     client.get(url).subscribe();
     const request = http.expectOne(url);

@@ -1,6 +1,8 @@
 import { Component, ElementRef, Injector, afterNextRender, inject, signal, viewChild } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
+import { safeRedirectTo } from '../../../../app.routes';
 import { SessionService } from '../../../../core/services/session';
 import { ThemeService } from '../../../../core/services/theme';
 import { HealthPill } from '../../../../shared/components/health-pill/health-pill';
@@ -15,6 +17,7 @@ import { Toast } from '../../../../shared/components/toast/toast';
 export class AuthPage {
   private readonly fb = inject(FormBuilder);
   private readonly injector = inject(Injector);
+  private readonly route = inject(ActivatedRoute);
   private readonly formHeading = viewChild<ElementRef<HTMLHeadingElement>>('formHeading');
   protected readonly session = inject(SessionService);
   protected readonly theme = inject(ThemeService);
@@ -46,7 +49,7 @@ export class AuthPage {
     }
 
     const { email, password } = this.loginForm.getRawValue();
-    this.session.login(email, password);
+    this.session.login(email, password, safeRedirectTo(this.route.snapshot.queryParamMap.get('redirectTo')));
   }
 
   protected register(): void {

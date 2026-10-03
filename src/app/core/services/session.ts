@@ -100,7 +100,7 @@ export class SessionService {
     });
   }
 
-  login(email: string, password: string): void {
+  login(email: string, password: string, redirectTo = '/'): void {
     this.run(() => {
       this.api.login(email, password).pipe(
         switchMap(() => this.api.getMe()),
@@ -109,7 +109,7 @@ export class SessionService {
         next: profile => {
           this.acceptProfile(profile);
           this.showMessage('Login realizado com sucesso.');
-          this.router.navigateByUrl('/');
+          void this.router.navigateByUrl(redirectTo);
         },
         error: error => this.showError(this.errorMessage(error))
       });
