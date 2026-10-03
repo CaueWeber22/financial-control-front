@@ -1,9 +1,11 @@
-import { HttpErrorResponse, HttpEvent, HttpInterceptorFn } from '@angular/common/http';
+import { HttpContextToken, HttpErrorResponse, HttpEvent, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Observable, catchError, of, switchMap, throwError } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { CookieAuthService, isCsrfError } from '../services/cookie-auth';
+
+export const SKIP_AUTH_REFRESH = new HttpContextToken(() => false);
 
 export const authTokenInterceptor: HttpInterceptorFn = (request, next) => {
   const isApiRequest = request.url === environment.apiBaseUrl ||
@@ -15,6 +17,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (request, next) => {
   }
 
   const auth = inject(CookieAuthService);
+  const skipAuthRefresh = request.context.get(SKIP_AUTH_REFRESH);
   const url = request.url.split('?')[0];
   const mutation = !['GET', 'HEAD', 'OPTIONS'].includes(request.method);
   const publicRequest = url.startsWith(`${environment.apiBaseUrl}/auth/`) ||
@@ -35,7 +38,7 @@ export const authTokenInterceptor: HttpInterceptorFn = (request, next) => {
             auth.invalidateCsrf();
             return send(true, authRetried);
           }
-          if (!publicRequest && error instanceof HttpErrorResponse && error.status === 401) {
+          if (!skipAuthRefresh && !publicRequest && error instanceof HttpErrorResponse && error.status === 401) {
             if (!authRetried) {
               return auth.refresh().pipe(switchMap(() => send(csrfRetried, true)));
             }

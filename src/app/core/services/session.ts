@@ -47,7 +47,7 @@ export class SessionService {
       return of(this.isAuthenticated());
     }
     if (!this.sessionRequest) {
-      this.sessionRequest = this.api.getMe().pipe(
+      this.sessionRequest = this.api.getMe({ skipAuthRefresh: true }).pipe(
         tap(profile => this.acceptProfile(profile)),
         map(() => true),
         catchError(error => {

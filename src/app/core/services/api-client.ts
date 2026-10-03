@@ -1,8 +1,9 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
+import { SKIP_AUTH_REFRESH } from '../interceptors/auth-token.interceptor';
 import { CookieAuthService } from './cookie-auth';
 
 export interface UserProfile {
@@ -102,8 +103,15 @@ export class ApiClientService {
     return this.cookieAuth.logout();
   }
 
-  getMe(): Observable<UserProfile> {
-    return this.http.get<UserProfile>(`${this.baseUrl}/users/me`);
+  getMe(options: { skipAuthRefresh?: boolean } = {}): Observable<UserProfile> {
+    const context = options.skipAuthRefresh
+      ? new HttpContext().set(SKIP_AUTH_REFRESH, true)
+      : undefined;
+
+    return this.http.get<UserProfile>(`${this.baseUrl}/users/me`, {
+      context,
+      timeout: 30000
+    });
   }
 
   listAccounts(): Observable<Account[]> {
