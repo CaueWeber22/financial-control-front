@@ -1,3 +1,22 @@
 :host {
   display: block;
 }
+
+.account-name {
+  align-items: center;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.default-badge {
+  background: color-mix(in srgb, var(--accent-color, #2563eb) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-color, #2563eb) 28%, transparent);
+  border-radius: 999px;
+  color: var(--accent-color, #2563eb);
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 0.25rem 0.45rem;
+  text-transform: uppercase;
+}

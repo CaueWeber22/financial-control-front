@@ -49,6 +49,7 @@ describe('Summary API rendering', () => {
 
     store.loadWorkspace();
     http.expectOne(`${environment.apiBaseUrl}/accounts?status=ACTIVE`).flush([]);
+    http.expectOne(`${environment.apiBaseUrl}/accounts/default`).flush({}, { status: 404, statusText: 'Not Found' });
     http.expectOne(`${environment.apiBaseUrl}/categories?status=ACTIVE`).flush([]);
     http.expectOne(`${environment.apiBaseUrl}/transactions?page=0&size=8`).flush({ content: [] });
     flushSummary([{ currency: 'BRL', ...row }]);

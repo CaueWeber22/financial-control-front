@@ -50,7 +50,12 @@
     <div class="data-list">
       @for (account of store.accounts(); track account.id) {
         <button class="data-row clickable" type="button" (click)="loadBalance(account.id)">
-          <span>{{ account.name }}</span>
+          <span class="account-name">
+            {{ account.name }}
+            @if (account.defaultAccount) {
+              <small class="default-badge">Padrão</small>
+            }
+          </span>
           <strong>{{ account.currency }}</strong>
           <small>{{ account.type }} · {{ account.status }}</small>
         </button>

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { FinanceStoreService } from '../../../../core/services/finance-store';
@@ -22,6 +22,16 @@ export class TransfersPage {
     effectiveDate: [this.store.today(), Validators.required],
     description: ['']
   });
+
+  constructor() {
+    effect(() => {
+      const defaultAccount = this.store.defaultAccount();
+
+      if (defaultAccount && !this.transferForm.controls.sourceAccountId.value) {
+        this.transferForm.controls.sourceAccountId.setValue(defaultAccount.id);
+      }
+    });
+  }
 
   protected createTransfer(): void {
     if (this.transferForm.invalid) {

@@ -19,6 +19,7 @@ export interface Account {
   type: 'CHECKING' | 'SAVINGS' | 'CASH' | 'INVESTMENT';
   currency: string;
   status: 'ACTIVE' | 'ARCHIVED';
+  defaultAccount: boolean;
 }
 
 export interface AccountBalance {
@@ -118,6 +119,10 @@ export class ApiClientService {
     return this.http.get<Account[]>(`${this.baseUrl}/accounts`, {
       params: new HttpParams().set('status', 'ACTIVE')
     });
+  }
+
+  getDefaultAccount(): Observable<Account> {
+    return this.http.get<Account>(`${this.baseUrl}/accounts/default`);
   }
 
   createAccount(payload: Record<string, unknown>): Observable<Account> {

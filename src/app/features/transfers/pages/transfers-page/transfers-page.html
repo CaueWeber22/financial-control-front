@@ -21,7 +21,7 @@
         <select formControlName="sourceAccountId">
           <option value="">Selecione</option>
           @for (account of store.accounts(); track account.id) {
-            <option [value]="account.id">{{ account.name }}</option>
+            <option [value]="account.id">{{ account.name }}{{ account.defaultAccount ? ' (Padrão)' : '' }}</option>
           }
         </select>
       </label>
@@ -30,7 +30,7 @@
         <select formControlName="destinationAccountId">
           <option value="">Selecione</option>
           @for (account of store.accounts(); track account.id) {
-            <option [value]="account.id">{{ account.name }}</option>
+            <option [value]="account.id">{{ account.name }}{{ account.defaultAccount ? ' (Padrão)' : '' }}</option>
           }
         </select>
       </label>

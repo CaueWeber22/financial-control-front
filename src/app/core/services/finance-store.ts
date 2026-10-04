@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, computed, inject, signal } from '@angular/core';
 
 import { Account, ApiClientService, Category, SummaryRow, Transaction, Transfer } from './api-client';
@@ -11,6 +12,7 @@ export class FinanceStoreService {
   private readonly session = inject(SessionService);
 
   readonly accounts = signal<Account[]>([]);
+  readonly defaultAccount = signal<Account | null>(null);
   readonly categories = signal<Category[]>([]);
   readonly transactions = signal<Transaction[]>([]);
   readonly transfers = signal<Transfer[]>([]);
@@ -22,6 +24,7 @@ export class FinanceStoreService {
   loadWorkspace(): void {
     this.session.loadProfile();
     this.loadAccounts();
+    this.loadDefaultAccount();
     this.loadCategories();
     this.loadTransactions();
     this.loadSummary(this.firstDayOfMonth(), this.today());
@@ -34,11 +37,26 @@ export class FinanceStoreService {
     });
   }
 
+  loadDefaultAccount(): void {
+    this.api.getDefaultAccount().subscribe({
+      next: account => this.defaultAccount.set(account),
+      error: error => {
+        if (this.isNotFound(error)) {
+          this.defaultAccount.set(null);
+          return;
+        }
+
+        this.session.showError(this.session.errorMessage(error));
+      }
+    });
+  }
+
   createAccount(payload: Record<string, unknown>): void {
     this.api.createAccount(payload).subscribe({
       next: () => {
         this.session.showMessage('Conta criada.');
         this.loadAccounts();
+        this.loadDefaultAccount();
       },
       error: error => this.session.showError(this.session.errorMessage(error))
     });
@@ -112,5 +130,9 @@ export class FinanceStoreService {
   firstDayOfMonth(): string {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
+  }
+
+  private isNotFound(error: unknown): boolean {
+    return error instanceof HttpErrorResponse && error.status === 404;
   }
 }
