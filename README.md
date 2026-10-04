@@ -14,7 +14,7 @@ npm install
 npm start
 ```
 
-As chamadas usam URLs relativas (`/api/v1` e `/actuator/health`). Em desenvolvimento local, o `proxy.conf.json` pode encaminhar essas rotas para um backend. No Docker, o Nginx do container encaminha essas rotas para o servico `api`.
+O build padrao de producao chama o backend Render diretamente (`https://cointrol-backend.onrender.com`). Em desenvolvimento local, o Angular usa `src/environments/environment.development.ts` com URLs relativas (`/api/v1` e `/actuator/health`), encaminhadas pelo `proxy.conf.json` para `http://localhost:8080`.
 
 ## Docker
 
@@ -24,9 +24,9 @@ A partir da raiz que contem `cointrol` e `front-end-control`:
 docker compose up --build
 ```
 
-O frontend fica em `http://localhost:4200`.
+O frontend fica em `http://localhost:4200`. A imagem Docker usa a configuracao `docker`, que mantem URLs relativas para o Nginx do container encaminhar `/api` e `/actuator` para o servico `api`.
 
-O backend precisa permitir a origem do frontend via CORS, incluindo os headers `Authorization`, `Content-Type` e `Idempotency-Key`. O proxy de desenvolvimento tambem aponta para o Render caso sejam usadas rotas relativas `/api` ou `/actuator`.
+O backend precisa permitir a origem do frontend via CORS, incluindo os headers `Authorization`, `Content-Type`, `X-CSRF-TOKEN` e `Idempotency-Key`.
 
 ## Funcionalidades iniciais
 

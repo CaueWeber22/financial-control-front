@@ -8,7 +8,7 @@ COPY package*.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
 
 COPY . .
-RUN npm run build
+RUN npm run build -- --configuration docker
 
 FROM nginx:1.27-alpine AS runtime
 

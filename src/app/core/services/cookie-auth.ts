@@ -26,6 +26,7 @@ export class CookieAuthService {
     if (!this.csrfRequest) {
       this.csrfRequest = this.http.get<CsrfToken>(`${this.baseUrl}/auth/csrf`, {
         withCredentials: true,
+        params: { _: Date.now() },
         timeout: 30000
       }).pipe(
         map(value => {
@@ -106,11 +107,13 @@ export class CookieAuthService {
 
   private mutate(action: string, body: unknown, retried = false): Observable<void> {
     return this.csrf().pipe(
-      switchMap(csrf => this.http.post<void>(`${this.baseUrl}/auth/${action}`, body, {
+      switchMap(csrf => this.http.post(`${this.baseUrl}/auth/${action}`, body, {
         withCredentials: true,
+        responseType: 'text',
         timeout: 30000,
         headers: { [csrf.headerName]: csrf.token }
       }).pipe(
+        map(() => undefined),
         catchError(error => {
           if (!retried && isCsrfError(error)) {
             this.invalidateCsrf();

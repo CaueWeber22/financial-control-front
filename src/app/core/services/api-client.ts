@@ -172,7 +172,9 @@ export class ApiClientService {
   }
 
   health(): Observable<{ status: string }> {
-    return this.http.get<{ status: string }>(environment.healthUrl);
+    return this.http.get<{ status: string }>(environment.healthUrl, {
+      params: new HttpParams().set('_', Date.now())
+    });
   }
 
   private idempotencyHeaders(value: string): HttpHeaders {
