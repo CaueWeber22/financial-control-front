@@ -129,6 +129,10 @@ export class ApiClientService {
     return this.http.post<Account>(`${this.baseUrl}/accounts`, payload);
   }
 
+  updateAccountName(accountId: string, name: string): Observable<Account> {
+    return this.http.patch<Account>(`${this.baseUrl}/accounts/${accountId}`, { name });
+  }
+
   getAccountBalance(accountId: string): Observable<AccountBalance> {
     return this.http.get<AccountBalance>(`${this.baseUrl}/accounts/${accountId}/balance`);
   }

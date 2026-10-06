@@ -2,6 +2,19 @@
   display: block;
 }
 
+.account-row {
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.account-summary {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
 .account-name {
   align-items: center;
   display: inline-flex;
@@ -19,4 +32,55 @@
   line-height: 1;
   padding: 0.25rem 0.45rem;
   text-transform: uppercase;
+}
+
+.account-side {
+  display: grid;
+  justify-items: end;
+  gap: 9px;
+}
+
+.account-actions,
+.rename-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.compact-button {
+  min-height: 34px;
+  padding: 7px 10px;
+  font-size: 0.78rem;
+}
+
+.rename-form {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+}
+
+.rename-form label {
+  min-width: 0;
+}
+
+@media (max-width: 620px) {
+  .account-row,
+  .rename-form {
+    grid-template-columns: 1fr;
+  }
+
+  .account-side {
+    justify-items: start;
+  }
+
+  .account-actions,
+  .rename-actions {
+    width: 100%;
+  }
+
+  .compact-button {
+    flex: 1;
+  }
 }

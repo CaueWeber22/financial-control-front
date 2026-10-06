@@ -62,6 +62,24 @@ export class FinanceStoreService {
     });
   }
 
+  updateAccountName(accountId: string, name: string, onSuccess?: () => void): void {
+    this.api.updateAccountName(accountId, name).subscribe({
+      next: account => {
+        this.accounts.update(accounts =>
+          accounts.map(current => current.id === account.id ? account : current)
+        );
+
+        if (this.defaultAccount()?.id === account.id) {
+          this.defaultAccount.set(account);
+        }
+
+        this.session.showMessage('Conta renomeada.');
+        onSuccess?.();
+      },
+      error: error => this.session.showError(this.accountUpdateErrorMessage(error))
+    });
+  }
+
   loadBalance(accountId: string): void {
     this.api.getAccountBalance(accountId).subscribe({
       next: balance =>
@@ -134,5 +152,19 @@ export class FinanceStoreService {
 
   private isNotFound(error: unknown): boolean {
     return error instanceof HttpErrorResponse && error.status === 404;
+  }
+
+  private accountUpdateErrorMessage(error: unknown): string {
+    if (error instanceof HttpErrorResponse) {
+      if (error.status === 409) {
+        return 'Já existe uma conta ativa com esse nome.';
+      }
+
+      if (error.status === 404) {
+        return 'Conta não encontrada.';
+      }
+    }
+
+    return this.session.errorMessage(error);
   }
 }

@@ -49,16 +49,45 @@
     </header>
     <div class="data-list">
       @for (account of store.accounts(); track account.id) {
-        <button class="data-row clickable" type="button" (click)="loadBalance(account.id)">
-          <span class="account-name">
-            {{ account.name }}
-            @if (account.defaultAccount) {
-              <small class="default-badge">Padrão</small>
-            }
-          </span>
-          <strong>{{ account.currency }}</strong>
-          <small>{{ account.type }} · {{ account.status }}</small>
-        </button>
+        <div class="data-row account-row">
+          @if (editingAccountId === account.id) {
+            <form [formGroup]="renameForm" (ngSubmit)="renameAccount()" class="rename-form">
+              <label>
+                Novo nome
+                <input formControlName="name" maxlength="100" />
+              </label>
+              <div class="rename-actions">
+                <button class="primary-button compact-button" type="submit" [disabled]="renameForm.invalid">
+                  Salvar
+                </button>
+                <button class="secondary-button compact-button" type="button" (click)="cancelRename()">
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          } @else {
+            <div class="account-summary">
+              <span class="account-name">
+                {{ account.name }}
+                @if (account.defaultAccount) {
+                  <small class="default-badge">Padrão</small>
+                }
+              </span>
+              <small>{{ account.type }} · {{ account.status }}</small>
+            </div>
+            <div class="account-side">
+              <strong>{{ account.currency }}</strong>
+              <div class="account-actions">
+                <button class="secondary-button compact-button" type="button" (click)="loadBalance(account.id)">
+                  Saldo
+                </button>
+                <button class="secondary-button compact-button" type="button" (click)="startRename(account)">
+                  Renomear
+                </button>
+              </div>
+            </div>
+          }
+        </div>
       } @empty {
         <p class="empty-state">
           Nenhuma conta ativa. Cadastre a primeira para organizar seus movimentos.
