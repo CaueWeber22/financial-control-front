@@ -133,6 +133,10 @@ export class ApiClientService {
     return this.http.patch<Account>(`${this.baseUrl}/accounts/${accountId}`, { name });
   }
 
+  archiveAccount(accountId: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/accounts/${accountId}`);
+  }
+
   getAccountBalance(accountId: string): Observable<AccountBalance> {
     return this.http.get<AccountBalance>(`${this.baseUrl}/accounts/${accountId}/balance`);
   }

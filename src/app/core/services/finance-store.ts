@@ -80,6 +80,24 @@ export class FinanceStoreService {
     });
   }
 
+  archiveAccount(accountId: string, onSuccess?: () => void): void {
+    const wasDefaultAccount = this.defaultAccount()?.id === accountId;
+
+    this.api.archiveAccount(accountId).subscribe({
+      next: () => {
+        this.accounts.update(accounts => accounts.filter(account => account.id !== accountId));
+
+        if (wasDefaultAccount) {
+          this.loadDefaultAccount();
+        }
+
+        this.session.showMessage('Conta excluída das contas ativas.');
+        onSuccess?.();
+      },
+      error: error => this.session.showError(this.accountArchiveErrorMessage(error))
+    });
+  }
+
   loadBalance(accountId: string): void {
     this.api.getAccountBalance(accountId).subscribe({
       next: balance =>
@@ -163,6 +181,14 @@ export class FinanceStoreService {
       if (error.status === 404) {
         return 'Conta não encontrada.';
       }
+    }
+
+    return this.session.errorMessage(error);
+  }
+
+  private accountArchiveErrorMessage(error: unknown): string {
+    if (this.isNotFound(error)) {
+      return 'Conta não encontrada.';
     }
 
     return this.session.errorMessage(error);

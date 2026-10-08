@@ -66,4 +66,20 @@ export class AccountsPage {
 
     this.store.updateAccountName(this.editingAccountId, name, () => this.cancelRename());
   }
+
+  protected archiveAccount(account: Account): void {
+    const confirmed = window.confirm(
+      'Essa conta será removida das contas ativas, mas o histórico financeiro será preservado. Deseja continuar?'
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    this.store.archiveAccount(account.id, () => {
+      if (this.editingAccountId === account.id) {
+        this.cancelRename();
+      }
+    });
+  }
 }

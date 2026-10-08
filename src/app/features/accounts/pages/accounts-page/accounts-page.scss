@@ -53,6 +53,23 @@
   font-size: 0.78rem;
 }
 
+.danger-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--danger), transparent 60%);
+  border-radius: 7px;
+  color: var(--danger);
+  background: var(--negative-soft);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.danger-button:hover {
+  border-color: var(--danger);
+  background: color-mix(in srgb, var(--negative-soft), var(--danger) 10%);
+}
+
 .rename-form {
   grid-column: 1 / -1;
   display: grid;
